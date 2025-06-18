@@ -16,8 +16,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-  call-docker-build:
+  docker-rootful:
     uses: ethdevops/workflows/.github/workflows/basic-docker-build.yaml@main
+    secrets:
+      docker_registry_user: ${{ secrets.DOCKER_REGISTRY_USER }}
+      docker_registry_password: ${{ secrets.DOCKER_REGISTRY_SECRET }}
+  docker-rootless:
+    uses: ethdevops/workflows/.github/workflows/basic-docker-build.yaml@main
+    with:
+      dockerfile: Dockerfile.rootless
+      tag_suffix: rootless
     secrets:
       docker_registry_user: ${{ secrets.DOCKER_REGISTRY_USER }}
       docker_registry_password: ${{ secrets.DOCKER_REGISTRY_SECRET }}
