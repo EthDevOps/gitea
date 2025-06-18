@@ -471,12 +471,9 @@ func handleSchedules(
 	input *notifyInput,
 	ref string,
 ) error {
-	branch, err := commit.GetBranchName()
-	if err != nil {
-		return err
-	}
-	if branch != input.Repo.DefaultBranch {
-		log.Trace("commit branch is not default branch in repo")
+	refName := git.RefName(ref)
+	if !refName.IsBranch() || refName.BranchName() != input.Repo.DefaultBranch {
+		log.Trace("ref %s is not default branch %s in repo", ref, input.Repo.DefaultBranch)
 		return nil
 	}
 
